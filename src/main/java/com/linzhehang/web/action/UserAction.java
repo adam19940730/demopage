@@ -12,7 +12,6 @@ import com.linzhehang.service.impl.UserServiceImpl;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
 
-
 public class UserAction extends ActionSupport implements ModelDriven<User> {
 
 	/**
@@ -35,9 +34,9 @@ public class UserAction extends ActionSupport implements ModelDriven<User> {
 					invoke = invocation.invoke();
 
 				}
-//				else {
-//					throw new RuntimeException("姓名长度必须小于5！");
-//				}
+				else {
+					throw new RuntimeException("姓名长度必须小于5！");
+				}
 				return invoke;
 			}
 
@@ -58,37 +57,44 @@ public class UserAction extends ActionSupport implements ModelDriven<User> {
 	}
 
 	public String find() {
+		if (pg == 0) {
+			pg = 1;
+		}
+		if (size == 0) {
+			size = 10;
+		} 
 		Page<User> page = service.findAllUserByPage(pg, size);
 		ServletActionContext.getRequest().setAttribute("page", page);
-		return "findUI";
+		System.out.println(page); 
+		return "findUI"; 
 	}
 
 	public String delete() {
 		MyProxy mp = new MyProxy();
+		User targetUser = service.findOne(user.getId());
 		IUserService proxy = (IUserService) mp.getProxy(service, new Interceptor() {
-			
+
 			@Override
 			public Object intercept(ActionInvocation invocation) throws Exception {
 				Object invoke = null;
-				if(user.getMoney()>=0&&user.getMoney()<=1000) {
+				if (targetUser.getMoney() >= 0 && targetUser.getMoney() <= 1000) {
 					invoke = invocation.invoke();
+				} else {
+					throw new RuntimeException("无法删除金额大于1000的用户");
 				}
-//				else {
-//					throw new RuntimeException("无法删除金额大于1000的用户");
-//				}
 				return invoke;
 			}
-			
+
 			@Override
 			public void init() {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void destory() {
 				// TODO Auto-generated method stub
-				
+
 			}
 		});
 		proxy.delete(user.getId());

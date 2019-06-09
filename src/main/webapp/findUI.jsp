@@ -52,7 +52,7 @@
 				<td>
 					<a href="User_delete?id=${u.id }">删除</a>
 					|
-					<a href="User_updateUI?id=${u.id }"></a>
+					<a href="User_updateUI?id=${u.id }">编辑</a>
 				</td>
 			</tr>
 		</c:forEach>

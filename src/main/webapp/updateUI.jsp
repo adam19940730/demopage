@@ -9,7 +9,7 @@
 <body>
 	<h3>修改用户</h3>
 	<form action="User_update" method="post">
-		<input type="text" name="id" value="${user.id }" />
+		<input type="text" name="id" value="${user.id }" /><br />
 		name:<input type="text" name="name" /> <br />
 		birthday:<input type="text" name="brithday" /> <br />
 		money:<input type="text" name="money" /> <br />
